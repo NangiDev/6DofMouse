@@ -1,0 +1,6 @@
+*/.vscode
+*/.pio
+
+*/lib
+*/include
+*/test
