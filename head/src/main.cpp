@@ -14,6 +14,7 @@ void setup()
   Serial.begin(115200);
   Serial1.begin(115200);
 
+  delay(10);
   Serial.println("<Head is ready>");
   Serial1.flush();
   Serial1.write(1);
@@ -41,10 +42,10 @@ void loop()
     coords[5] = myInts.values[1];
 
 #if defined(DEBUG)
-    coords[0] = random(0, 1024);
-    coords[3] = random(0, 1024);
-    coords[1] = random(0, 1024);
-    coords[4] = random(0, 1024);
+    // coords[0] = random(0, 1024);
+    // coords[3] = random(0, 1024);
+    // coords[1] = random(0, 1024);
+    // coords[4] = random(0, 1024);
 
     Serial.println("\tJoystick 0");
     Serial.print("\t\tX: ");
@@ -65,7 +66,7 @@ void loop()
     Serial.println(coords[5]);
     Serial.println();
     Serial.println("== Asking for more coordiates ==");
-    delay(1000);
+    delay(100);
 #endif // DEBUG
 
     Serial1.write(1);

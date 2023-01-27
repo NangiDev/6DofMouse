@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define DEBUG
+// #define DEBUG
 
 union Ints
 {
@@ -45,10 +45,10 @@ void loop()
     myInts.values[0] = analogRead(A0);
     myInts.values[1] = analogRead(A1);
 
-#if defined(DEBUG)
-    myInts.values[0] = random(0, 1024);
-    myInts.values[1] = random(0, 1024);
-#endif // DEBUG
+    // #if defined(DEBUG)
+    //     myInts.values[0] = random(0, 1024);
+    //     myInts.values[1] = random(0, 1024);
+    // #endif // DEBUG
 
     Serial1.write((byte *)&myInts.combined, sizeof(myInts.combined));
     readyToWrite = 0;
