@@ -1,25 +1,59 @@
 #include <Arduino.h>
 
-int RXLED = 17;
+// #define DEBUG
 
 void setup()
 {
-  // initialize LED digital pin as an output.
-  pinMode(RXLED, OUTPUT);
+  Serial.begin(115200);
+  Serial1.begin(115200);
 
-  Serial.begin(9600);
+  Serial1.flush();
   Serial.println("<Tail is ready>");
+}
+
+union Ints
+{
+  int values[2];
+  long combined;
+} myInts;
+
+int readyToWrite = 1;
+bool receiverIsReadyToReceive()
+{
+  if (Serial1.available() > 0)
+  {
+    readyToWrite = Serial1.read();
+
+#if defined(DEBUG)
+    if (readyToWrite > 0)
+    {
+      Serial.println("== Receiver is ready! ==");
+    }
+    else
+    {
+      Serial.println("== Waiting for receiver to be ready! ==");
+    }
+#endif // DEBUG
+  }
+  return readyToWrite > 0;
 }
 
 void loop()
 {
-  digitalWrite(RXLED, LOW); // set the RX LED ON
-  TXLED0;                   // TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
-  delay(1000);              // wait for a second
+  if (receiverIsReadyToReceive())
+  {
+    myInts.values[0] = random(0, 1024);
+    myInts.values[1] = random(0, 1024);
+    Serial1.write((byte *)&myInts.combined, sizeof(myInts.combined));
+    readyToWrite = 0;
 
-  Serial.write("Hello Head! I'm Tail! \n");
-
-  digitalWrite(RXLED, HIGH); // set the RX LED OFF
-  TXLED1;                    // TX LED macro to turn LED ON
-  delay(1000);               // wait for a second
+#if defined(DEBUG)
+    Serial.println("\tWriting: ");
+    Serial.print("\t\tX: ");
+    Serial.println(myInts.values[0]);
+    Serial.print("\t\tY: ");
+    Serial.println(myInts.values[1]);
+    Serial.println();
+#endif // DEBUG
+  }
 }
