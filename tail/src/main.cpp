@@ -1,6 +1,12 @@
 #include <Arduino.h>
 
-// #define DEBUG
+#define DEBUG
+
+union Ints
+{
+  int values[2];
+  long combined;
+} myInts;
 
 void setup()
 {
@@ -10,12 +16,6 @@ void setup()
   Serial1.flush();
   Serial.println("<Tail is ready>");
 }
-
-union Ints
-{
-  int values[2];
-  long combined;
-} myInts;
 
 int readyToWrite = 1;
 bool receiverIsReadyToReceive()
@@ -42,8 +42,14 @@ void loop()
 {
   if (receiverIsReadyToReceive())
   {
+    myInts.values[0] = analogRead(A0);
+    myInts.values[1] = analogRead(A1);
+
+#if defined(DEBUG)
     myInts.values[0] = random(0, 1024);
     myInts.values[1] = random(0, 1024);
+#endif // DEBUG
+
     Serial1.write((byte *)&myInts.combined, sizeof(myInts.combined));
     readyToWrite = 0;
 
