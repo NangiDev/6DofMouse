@@ -1,27 +1,40 @@
 #include <Arduino.h>
 
-int RXLED = 17;
-
 void setup()
 {
-  // initialize LED digital pin as an output.
-  pinMode(RXLED, OUTPUT);
+  Serial.begin(115200);
+  Serial1.begin(115200);
 
-  Serial.begin(9600);
   Serial.println("<Head is ready>");
 }
 
-char receivedChar;
+union Ints
+{
+  int values[2];
+  long combined;
+} myInts;
+
+long incomingInt;
+int firstInt, secondInt;
 
 void loop()
 {
-  digitalWrite(RXLED, LOW); // set the RX LED ON
-  TXLED0;                   // TX LED is not tied to a normally controlled pin so a macro is needed, turn LED OFF
-  delay(1000);              // wait for a second
+  if (Serial1.available() >= sizeof(incomingInt))
+  {
+    Serial1.readBytes((byte *)&myInts.combined, sizeof(myInts.combined));
 
-  Serial.print("This just in ... \n");
+    int firstInt = myInts.values[0];
+    int secondInt = myInts.values[1];
 
-  digitalWrite(RXLED, HIGH); // set the RX LED OFF
-  TXLED1;                    // TX LED macro to turn LED ON
-  delay(1000);               // wait for a second
+    Serial.println(firstInt);
+    Serial.println(secondInt);
+  }
+  else
+  {
+    myInts.values[0] = 42;
+    myInts.values[1] = 123;
+
+    Serial1.write((byte *)&myInts.combined, sizeof(myInts.combined));
+  }
+  delay(1000);
 }
