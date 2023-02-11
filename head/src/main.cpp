@@ -1,6 +1,6 @@
 #include <Arduino.h>
 
-#define DEBUG
+// #define DEBUG
 #define DOF 6
 
 union Ints
@@ -22,10 +22,7 @@ void setup()
 
 int tailX, tailY;
 int coords[DOF] = {512, 512, 512, 512, 512, 512};
-
-void calculate()
-{
-}
+char charCoords[DOF * 4];
 
 void loop()
 {
@@ -35,41 +32,17 @@ void loop()
     Serial1.readBytes((byte *)&myInts.combined, sizeof(myInts.combined));
 
     coords[0] = analogRead(A0);
-    coords[1] = analogRead(A2);
-    coords[2] = myInts.values[0];
-    coords[3] = analogRead(A1);
-    coords[4] = analogRead(A3);
+    coords[1] = analogRead(A1);
+    coords[2] = analogRead(A2);
+    coords[3] = analogRead(A3);
+    coords[4] = myInts.values[0];
     coords[5] = myInts.values[1];
 
-#if defined(DEBUG)
-    // coords[0] = random(0, 1024);
-    // coords[3] = random(0, 1024);
-    // coords[1] = random(0, 1024);
-    // coords[4] = random(0, 1024);
+    sprintf(charCoords, "%d;%d;%d;%d;%d;%d\n", coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
+    Serial.print(charCoords);
 
-    Serial.println("\tJoystick 0");
-    Serial.print("\t\tX: ");
-    Serial.println(coords[0]);
-    Serial.print("\t\tY: ");
-    Serial.println(coords[3]);
-    Serial.println();
-    Serial.println("\tJoystick 1");
-    Serial.print("\t\tX: ");
-    Serial.println(coords[1]);
-    Serial.print("\t\tY: ");
-    Serial.println(coords[4]);
-    Serial.println();
-    Serial.println("\tJoystick 2");
-    Serial.print("\t\tX: ");
-    Serial.println(coords[2]);
-    Serial.print("\t\tY: ");
-    Serial.println(coords[5]);
-    Serial.println();
-    Serial.println("== Asking for more coordiates ==");
-    delay(100);
-#endif // DEBUG
+    // Serial.print(sizeof(charCoords));
 
     Serial1.write(1);
-    calculate();
   }
 }
