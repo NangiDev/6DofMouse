@@ -15,14 +15,11 @@ void setup()
   Serial1.begin(115200);
 
   delay(10);
-  Serial.println("<Head is ready>");
   Serial1.flush();
   Serial1.write(1);
 }
 
-int tailX, tailY;
-int coords[DOF] = {512, 512, 512, 512, 512, 512};
-char charCoords[DOF * 4];
+int axis1, axis2, axis3, axis4, axis5, axis6 = 512;
 
 void loop()
 {
@@ -31,17 +28,19 @@ void loop()
     Serial1.write(0);
     Serial1.readBytes((byte *)&myInts.combined, sizeof(myInts.combined));
 
-    coords[0] = analogRead(A0);
-    coords[1] = analogRead(A1);
-    coords[2] = analogRead(A2);
-    coords[3] = analogRead(A3);
-    coords[4] = myInts.values[0];
-    coords[5] = myInts.values[1];
+    axis1 = analogRead(A0);
+    axis2 = analogRead(A1);
+    axis3 = analogRead(A2);
+    axis4 = analogRead(A3);
+    axis5 = myInts.values[0];
+    axis6 = myInts.values[1];
 
-    sprintf(charCoords, "%d;%d;%d;%d;%d;%d\n", coords[0], coords[1], coords[2], coords[3], coords[4], coords[5]);
-    Serial.print(charCoords);
-
-    // Serial.print(sizeof(charCoords));
+    Serial.write((uint8_t *)&axis1, sizeof(int));
+    Serial.write((uint8_t *)&axis2, sizeof(int));
+    Serial.write((uint8_t *)&axis3, sizeof(int));
+    Serial.write((uint8_t *)&axis4, sizeof(int));
+    Serial.write((uint8_t *)&axis5, sizeof(int));
+    Serial.write((uint8_t *)&axis6, sizeof(int));
 
     Serial1.write(1);
   }
