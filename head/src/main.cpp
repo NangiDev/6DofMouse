@@ -1,75 +1,49 @@
 #include <Arduino.h>
 
-#define DEBUG
+// #define DEBUG
 #define DOF 6
-
-union Ints
-{
-  int values[2];
-  long combined;
-} myInts;
 
 void setup()
 {
   Serial.begin(115200);
   Serial1.begin(115200);
-
-  delay(10);
-  Serial.println("<Head is ready>");
   Serial1.flush();
+
+  // delay(10); // Wait for Tail to start listening
+  while (!Serial1.availableForWrite())
+  {
+  }
   Serial1.write(1);
 }
 
-int tailX, tailY;
-int coords[DOF] = {512, 512, 512, 512, 512, 512};
-
-void calculate()
-{
-}
+int axis1, axis2, axis3, axis4, axis5, axis6 = 512;
 
 void loop()
 {
-  if (Serial1.available() >= (long)sizeof(myInts.combined))
+  // Only read is serial data availabe
+  if (Serial1.available() > 0)
   {
+    // Tell Tail that Head is not ready
     Serial1.write(0);
-    Serial1.readBytes((byte *)&myInts.combined, sizeof(myInts.combined));
 
-    coords[0] = analogRead(A0);
-    coords[1] = analogRead(A2);
-    coords[2] = myInts.values[0];
-    coords[3] = analogRead(A1);
-    coords[4] = analogRead(A3);
-    coords[5] = myInts.values[1];
+    // Read joysticks
+    axis1 = analogRead(A0);
+    axis2 = analogRead(A1);
+    axis3 = analogRead(A2);
+    axis4 = analogRead(A3);
+    // Read joystick from Tail
+    Serial1.readBytes((uint8_t *)&axis5, sizeof(int));
+    Serial1.readBytes((uint8_t *)&axis6, sizeof(int));
 
-#if defined(DEBUG)
-    // coords[0] = random(0, 1024);
-    // coords[3] = random(0, 1024);
-    // coords[1] = random(0, 1024);
-    // coords[4] = random(0, 1024);
+    // Write all joysticks over usb
+    Serial.write((uint8_t *)&axis1, sizeof(int));
+    Serial.write((uint8_t *)&axis2, sizeof(int));
+    Serial.write((uint8_t *)&axis3, sizeof(int));
+    Serial.write((uint8_t *)&axis4, sizeof(int));
+    Serial.write((uint8_t *)&axis5, sizeof(int));
+    Serial.write((uint8_t *)&axis6, sizeof(int));
 
-    Serial.println("\tJoystick 0");
-    Serial.print("\t\tX: ");
-    Serial.println(coords[0]);
-    Serial.print("\t\tY: ");
-    Serial.println(coords[3]);
-    Serial.println();
-    Serial.println("\tJoystick 1");
-    Serial.print("\t\tX: ");
-    Serial.println(coords[1]);
-    Serial.print("\t\tY: ");
-    Serial.println(coords[4]);
-    Serial.println();
-    Serial.println("\tJoystick 2");
-    Serial.print("\t\tX: ");
-    Serial.println(coords[2]);
-    Serial.print("\t\tY: ");
-    Serial.println(coords[5]);
-    Serial.println();
-    Serial.println("== Asking for more coordiates ==");
-    delay(100);
-#endif // DEBUG
-
+    // Tell Tail that Head is ready
     Serial1.write(1);
-    calculate();
   }
 }
