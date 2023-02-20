@@ -21,9 +21,12 @@ Computer <-> HEAD <-> TAIL <-> Joystick3
           Joystick2
 ```
 
-#### Detailed
-##### SOON
+#### Detailed curcuit
+![Details curcuit](images/atmega32u4.png)
 
 
 ## Pictures
-### SOON
+### Externals
+![Externals](images/externals.jpg)
+### Internals
+![Internals](images/internals.jpg)
