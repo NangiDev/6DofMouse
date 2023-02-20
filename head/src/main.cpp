@@ -35,13 +35,21 @@ void loop()
     Serial1.readBytes((uint8_t *)&axis5, sizeof(int));
     Serial1.readBytes((uint8_t *)&axis6, sizeof(int));
 
-    // Write all joysticks over usb
-    Serial.write((uint8_t *)&axis1, sizeof(int));
-    Serial.write((uint8_t *)&axis2, sizeof(int));
-    Serial.write((uint8_t *)&axis3, sizeof(int));
-    Serial.write((uint8_t *)&axis4, sizeof(int));
-    Serial.write((uint8_t *)&axis5, sizeof(int));
-    Serial.write((uint8_t *)&axis6, sizeof(int));
+    // Wait for receiver to be ready
+    if (Serial.available() > 0)
+    {
+      // Consume the ready message from receiver
+      Serial.read();
+      // Write all joysticks over usb
+      Serial.write((uint8_t *)&axis1, sizeof(int));
+      Serial.write((uint8_t *)&axis2, sizeof(int));
+      Serial.write((uint8_t *)&axis3, sizeof(int));
+      Serial.write((uint8_t *)&axis4, sizeof(int));
+      Serial.write((uint8_t *)&axis5, sizeof(int));
+      Serial.write((uint8_t *)&axis6, sizeof(int));
+      // Flush to prevent miss matching data
+      Serial.flush();
+    }
 
     // Tell Tail that Head is ready
     Serial1.write(1);
