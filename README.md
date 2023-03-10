@@ -33,7 +33,7 @@ Computer <-> HEAD <-> TAIL <-> Joystick3
 
 ### Detailed curcuit 🧬
 
-<a href="#" onclick="showImage('images/atmega32u4.png')">
+<a href="/blob/main/images/atmega32u4.png" onclick="showImage('images/atmega32u4.png')">
   <img src="images/atmega32u4.png" alt="Image" width="400">
 </a>
 
