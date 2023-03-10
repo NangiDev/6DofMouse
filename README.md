@@ -1,32 +1,58 @@
-# 6DofMouse
-A home built 3D Cad mouse based on [this project](https://hackaday.com/2022/12/28/mouse-enjoys-its-freedom/), but with some modifications
+# 🖱️ 6DofMouse 🐭
 
-## Modifications
-The body is the same, but I had to modify the internals a bit, because I only had Micro Pro Atmega32u4's at home. Which does not have enough analog pins.
-So I decided to daisy chain together two Micro's.
-Calling them HEAD and TAIL.
+## Introduction 🚀
+
+A home built 6 DOF CAD mouse.
+Based on [Shinsaku Hiura's 'Space Mushroom'](https://www.thingiverse.com/thing:5739462), mentioned in [this Hackaday article](https://hackaday.com/2022/12/28/mouse-enjoys-its-freedom/). I made some modifications.
+
+## Modifications 🛠️
+
+The 3D printed body is mostly the same, but I had to modify the internals.
+
+I only had a couple of _Micro Pro Atmega32u4's_ at home. Which does not have enough analog pins. So I decided to daisy chain together two of them.
+Calling them **HEAD** and **TAIL**.
+
+## Dependencies 🔗
 
 ### Blender add-on
-To make it easier and better, in my opinion, I decided to only support Blender. Thus making it depend on a Blender add-on.
-[Code located here](https://github.com/NangiDev/Blender6DofMouseAddon)
 
-### Curcuit
-The curcuit is something like this:
+To make it easier and, in my opinion, better. I decided to only support Blender. Thus making it depend on a Blender add-on.
+[Source code for Blender add-on](https://github.com/NangiDev/Blender6DofMouseAddon)
+
+## Curcuit 💻
+
+The curcuit looks something like this:
 
 ```
           Joystick1
-              | 
+              |
 Computer <-> HEAD <-> TAIL <-> Joystick3
               |
           Joystick2
 ```
 
-#### Detailed curcuit
-![Details curcuit](images/atmega32u4.png)
+### Detailed curcuit 🧬
 
+<a href="#" onclick="showImage('images/atmega32u4.png')">
+  <img src="images/atmega32u4.png" alt="Image" width="400">
+</a>
 
 ## Pictures
+
 ### Externals
-![Externals](images/externals.jpg)
+
+<a href="#" onclick="showImage('images/externals.jpg')">
+  <img src="images/externals.jpg" alt="Image" width="400">
+</a>
+
 ### Internals
-![Internals](images/internals.jpg)
+
+<a href="#" onclick="showImage('images/internals.jpg')">
+  <img src="images/internals.jpg" alt="Image" width="400">
+</a>
+
+<script>
+function showImage(imageURL) {
+  window.open(imageURL);
+}
+</script>
