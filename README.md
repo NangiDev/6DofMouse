@@ -33,7 +33,7 @@ Computer <-> HEAD <-> TAIL <-> Joystick3
 
 ### Detailed curcuit 🧬
 
-<a href="images/atmega32u4.png" onclick="showImage('images/atmega32u4.png')">
+<a href="images/atmega32u4.png">
   <img src="images/atmega32u4.png" alt="Image" width="400">
 </a>
 
@@ -41,18 +41,12 @@ Computer <-> HEAD <-> TAIL <-> Joystick3
 
 ### Externals
 
-<a href="images/externals.png" onclick="showImage('images/externals.jpg')">
+<a href="images/externals.jpg">
   <img src="images/externals.jpg" alt="Image" width="400">
 </a>
 
 ### Internals
 
-<a href="images/internals.jpg" onclick="showImage('images/internals.jpg')">
+<a href="images/internals.jpg">
   <img src="images/internals.jpg" alt="Image" width="400">
 </a>
-
-<script>
-function showImage(imageURL) {
-  window.open(imageURL);
-}
-</script>
